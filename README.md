@@ -4,6 +4,7 @@
 ### !!!Az első metódust ( public GravityDrive() ) át kell nevezni public Program() -ra !!!
 Működés: pilótafülkéből toolbarról kell futtatni a scriptet a megfelelő argumentumokkal.
 A Gravity Drive-hoz tartozó gravity generátorok nevébe bele kell írni [Gravity Drive]  (scriptben módosítható)
+A script elején módosítani kell a 2 gravitációs értéket annak megfelelően, hogy merre néznek a gravity generátorok. 
 
 #### Argumentumok: 
 - Előre mozgás: direction=forward
