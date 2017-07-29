@@ -36,6 +36,7 @@ namespace SpaceEngineers_Visual_Studio_17
         const string postfix = "]";
         List<IMyTextPanel> taggedTextPanelList;
 
+        //Constructor !!!!! Rename to public Program() in-game !!!!!
         public LcdCustomDataProfiles()
         {
             List<IMyTextPanel> allTextPanel = new List<IMyTextPanel>();
@@ -48,9 +49,9 @@ namespace SpaceEngineers_Visual_Studio_17
         public void Gas()
         {
             // Profil neve 
-            string profileName = "STATUS";
+            string partialTag = "STATUS";
             // LCD nevében lévő teljes tag (itt pl: [Yusukee_LCD STATUS] ) 
-            string tag = prefix + " " + profileName + postfix;
+            string tag = prefix + " " + partialTag + postfix;
             // új custom data 
             string customData = "Center --- Gas Tanks ---;Tanks * Oxygen;Tanks * Hydrogen;Center --- Cargo Summary ---;Cargo;Center --- Oxygen Generators (Many more) ---;Working {Oxygen Generator 2};";
             // public Text (profil váltáskor felenik meg, amíg nem frissül a LCD mod)
@@ -79,8 +80,8 @@ namespace SpaceEngineers_Visual_Studio_17
 
         public void Power()
         {
-            string profileName = "STATUS";
-            string tag = prefix + " " + profileName + postfix;
+            string partialTag = "STATUS";
+            string tag = prefix + " " + partialTag + postfix;
             string customData = "Center --- Power Summary ---;Power;";
             string publicText = "Profile: Power";
             float fontSize = 1.0F;
@@ -104,8 +105,8 @@ namespace SpaceEngineers_Visual_Studio_17
 
         public void PowerConsumption()
         {
-            string profileName = "STATUS";
-            string tag = prefix + " " + profileName + postfix;
+            string partialTag = "STATUS";
+            string tag = prefix + " " + partialTag + postfix;
             string customData = "Center --- Power Consumption ---;PowerUsedTop {T:*} 8;";
             string publicText = "Profile: Power Consumption";
             float fontSize = 1.0F;
@@ -129,8 +130,8 @@ namespace SpaceEngineers_Visual_Studio_17
 
         public void InventoryOre()
         {
-            string profileName = "INVENTORY";
-            string tag = prefix + " " + profileName + postfix;
+            string partialTag = "INVENTORY";
+            string tag = prefix + " " + partialTag + postfix;
             string publicText = "Profile: Ore Inventory";
             string name = "LCD Inventory [TIM INVEN:Ore] [Yusukee_LCD INVENTORY]";
             float fontSize = 1.0F;
@@ -154,8 +155,8 @@ namespace SpaceEngineers_Visual_Studio_17
 
         public void InventoryIngot()
         {
-            string profileName = "INVENTORY";
-            string tag = prefix + " " + profileName + postfix;
+            string partialTag = "INVENTORY";
+            string tag = prefix + " " + partialTag + postfix;
             string publicText = "Profile: Ingot Inventory";
             string name = "LCD Inventory [TIM INVEN:Ingot] [Yusukee_LCD INVENTORY]";
             float fontSize = 1.0F;
@@ -182,22 +183,27 @@ namespace SpaceEngineers_Visual_Studio_17
             switch (args)
             {
                 //STATUS tag
+                //Automatic LCDs 2
                 case "GAS":
                     Gas();
                     break;
                 //STATUS tag
+                //Automatic LCDs 2
                 case "POWER":
                     Power();
                     break;
                 //STATUS tag
+                //Automatic LCDs 2
                 case "POWER_CONSUMPTION":
                     PowerConsumption();
                     break;
                 //INVENTORY tag
+                //TIM Inventory manager
                 case "INVENTORY_ORE":
                     InventoryOre();
                     break;
                 //INVENTORY tag
+                //TIM Inventory manager
                 case "INVENTOTY_INGOT":
                     InventoryIngot();
                     break;

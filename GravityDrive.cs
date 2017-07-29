@@ -26,8 +26,18 @@ namespace SpaceEngineers_Visual_Studio_17
         //////////////////////////BEGIN//////////////////////////////////////////
         //=======================================================================
 
+        /*
+         * 
+         * Moving forward: Use direction=forward argument 
+         * Moving backward: Use direction=backward argument
+         * Stop gravity drive: Use default (empty) argument. (This WON'T stop the ship)
+         */
+
+        //Tag in gravity generators name
         const string gravityDriveGeneratorTag = "[Gravity Drive]";
+        //forward gravity force. Depends on the orientation of the gravity generator
         const float forwardGravity = 9.8f;
+        //forward gravity force. Depends on the orientation of the gravity generator
         const float backwardGravity = -9.8f;
 
         List<IMyGravityGenerator> driveGravityGeneratorList;
@@ -35,6 +45,7 @@ namespace SpaceEngineers_Visual_Studio_17
         List<IMyArtificialMassBlock> artificialMassList;
         IMyCockpit mainCockpit;
 
+        //Constructor !!!!! Rename to public Program() in-game !!!!!
         public GravityDrive()
         {
             List<IMyCockpit> cockpitList = new List<IMyCockpit>();

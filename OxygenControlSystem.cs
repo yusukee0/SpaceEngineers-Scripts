@@ -31,7 +31,7 @@ namespace SpaceEngineers
         List<IMyGasGenerator> generatorList;
         List<IMyAirVent> airVentList;
 
-        //Constructor !!!!! Rename to Program in-game !!!!!
+        //Constructor !!!!! Rename to public Program() in-game !!!!!
         public OxygenControlSystem()
         {
             // Get the list of gas tanks
