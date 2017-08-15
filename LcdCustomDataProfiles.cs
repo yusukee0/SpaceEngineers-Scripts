@@ -46,6 +46,50 @@ namespace SpaceEngineers_Visual_Studio_17
             Echo("Compiled Successfuly");
         }
 
+        public void Main(string args)
+        {
+            switch (args)
+            {
+                //STATUS tag
+                //Automatic LCDs 2
+                case "GAS":
+                    Gas();
+                    break;
+                //STATUS tag
+                //Automatic LCDs 2
+                case "POWER":
+                    Power();
+                    break;
+                //STATUS tag
+                //Automatic LCDs 2
+                case "POWER_CONSUMPTION":
+                    PowerConsumption();
+                    break;
+                //INVENTORY tag
+                //TIM Inventory manager
+                case "INVENTORY_ORE":
+                    InventoryOre();
+                    break;
+                //INVENTORY tag
+                //TIM Inventory manager
+                case "INVENTORY_INGOT":
+                    InventoryIngot();
+                    break;
+                //INVENTORY tag
+                //TIM Inventory manager
+                case "INVENTORY_COMPONENT":
+                    InventoryComponent();
+                    break;
+                //INVENTORY tag
+                //TIM Inventory manager
+                case "INVENTORY_QUOTA":
+                    InventoryQuota();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void Gas()
         {
             // Profil neve 
@@ -178,37 +222,53 @@ namespace SpaceEngineers_Visual_Studio_17
             }
         }
 
-        public void Main(string args)
+        public void InventoryComponent()
         {
-            switch (args)
+            string partialTag = "INVENTORY";
+            string tag = prefix + " " + partialTag + postfix;
+            string publicText = "Profile: Component Inventory";
+            string name = "LCD Inventory [TIM INVEN:Component] [Yusukee_LCD INVENTORY]";
+            float fontSize = 1.0F;
+            Color fontColor = new Color(255, 255, 255);
+            Color backgroundColor = new Color(0, 0, 0);
+
+            //=======================================================================
+            foreach (IMyTextPanel textPanel in taggedTextPanelList)
             {
-                //STATUS tag
-                //Automatic LCDs 2
-                case "GAS":
-                    Gas();
-                    break;
-                //STATUS tag
-                //Automatic LCDs 2
-                case "POWER":
-                    Power();
-                    break;
-                //STATUS tag
-                //Automatic LCDs 2
-                case "POWER_CONSUMPTION":
-                    PowerConsumption();
-                    break;
-                //INVENTORY tag
-                //TIM Inventory manager
-                case "INVENTORY_ORE":
-                    InventoryOre();
-                    break;
-                //INVENTORY tag
-                //TIM Inventory manager
-                case "INVENTOTY_INGOT":
-                    InventoryIngot();
-                    break;
-                default:
-                    break;
+                if (textPanel.CustomName.Contains(tag))
+                {
+                    textPanel.CustomName = name;
+                    textPanel.SetValue("FontSize", fontSize);
+                    textPanel.SetValue("FontColor", fontColor);
+                    textPanel.SetValue("BackgroundColor", backgroundColor);
+                    textPanel.WritePublicText(publicText);
+                    textPanel.ShowPublicTextOnScreen();
+                }
+            }
+        }
+
+        public void InventoryQuota()
+        {
+            string partialTag = "INVENTORY";
+            string tag = prefix + " " + partialTag + postfix;
+            string publicText = "Profile: TIM QUOTA";
+            string name = "LCD Inventory [TIM QUOTA] [Yusukee_LCD INVENTORY]";
+            float fontSize = 1.0F;
+            Color fontColor = new Color(255, 255, 255);
+            Color backgroundColor = new Color(0, 0, 0);
+
+            //=======================================================================
+            foreach (IMyTextPanel textPanel in taggedTextPanelList)
+            {
+                if (textPanel.CustomName.Contains(tag))
+                {
+                    textPanel.CustomName = name;
+                    textPanel.SetValue("FontSize", fontSize);
+                    textPanel.SetValue("FontColor", fontColor);
+                    textPanel.SetValue("BackgroundColor", backgroundColor);
+                    textPanel.WritePublicText(publicText);
+                    textPanel.ShowPublicTextOnScreen();
+                }
             }
         }
 

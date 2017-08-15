@@ -27,20 +27,25 @@ namespace SpaceEngineers_Visual_Studio_17
         //=======================================================================
 
         /*
-         * 
-         * Moving forward: Use direction=forward argument 
-         * Moving backward: Use direction=backward argument
-         * Stop gravity drive: Use default (empty) argument. (This WON'T stop the ship)
-         */
+            * 
+            * Moving forward: Use direction=forward argument 
+            * Moving backward: Use direction=backward argument
+            * Stop gravity drive: Use default (empty) argument. (This WON'T stop the ship)
+            */
 
-        //Tag in gravity generators name
-        const string gravityDriveGeneratorTag = "[Gravity Drive]";
+        const string forwardGenerators = "[Gravity Drive FORWARD]";
+        const string upwardGenerators = "[Gravity Drive UP]";
         //forward gravity force. Depends on the orientation of the gravity generator
         const float forwardGravity = 9.8f;
         //forward gravity force. Depends on the orientation of the gravity generator
         const float backwardGravity = -9.8f;
+        //upward gravity force. Depends on the orientation of the gravity generator
+        const float upwardGravity = -9.8f;
+        //downward gravity force. Depends on the orientation of the gravity generator
+        const float downwardGravity = +9.8f;
 
-        List<IMyGravityGenerator> driveGravityGeneratorList;
+        List<IMyGravityGenerator> forwardDriveGravityGeneratorList;
+        List<IMyGravityGenerator> upwardDriveGravityGeneratorList;
         List<IMyGravityGenerator> normalGravityGeneratorList;
         List<IMyArtificialMassBlock> artificialMassList;
         IMyCockpit mainCockpit;
@@ -66,33 +71,29 @@ namespace SpaceEngineers_Visual_Studio_17
             artificialMassList = new List<IMyArtificialMassBlock>();
             GridTerminalSystem.GetBlocksOfType<IMyArtificialMassBlock>(artificialMassList);
 
-            driveGravityGeneratorList = new List<IMyGravityGenerator>();
+            forwardDriveGravityGeneratorList = new List<IMyGravityGenerator>();
+            upwardDriveGravityGeneratorList = new List<IMyGravityGenerator>();
             normalGravityGeneratorList = new List<IMyGravityGenerator>();
             foreach (IMyGravityGenerator generator in allGravityGeneratorList)
             {
-                if (generator.CustomName.Contains(gravityDriveGeneratorTag))
+                if (generator.CustomName.Contains(forwardGenerators))
                 {
-                    driveGravityGeneratorList.Add(generator);
+                    generator.ApplyAction("OnOff_Off");
+                    forwardDriveGravityGeneratorList.Add(generator);
+                } else if (generator.CustomName.Contains(upwardGenerators))
+                {
+                    generator.ApplyAction("OnOff_Off");
+                    upwardDriveGravityGeneratorList.Add(generator);
                 } else
                 {
                     normalGravityGeneratorList.Add(generator);
                 }
             }
 
-            try
-            {
-                foreach (IMyGravityGenerator generator in driveGravityGeneratorList)
-                {
-                    generator.ApplyAction("OnOff_Off");
-                }
-            } catch
-            {
-                Echo("Cannot find gravity generator with tag " + gravityDriveGeneratorTag);
-            }
-
             turnOffArtificialMass();
 
-            Echo("Compiled Successfuly. \nGravity Drive Components:\nGravity generators: " + driveGravityGeneratorList.Count + ", Masses: " + artificialMassList.Count);
+            Echo("Compiled Successfuly. \nGravity Drive Components:\nGravity generators (Forward): " + forwardDriveGravityGeneratorList.Count +
+                "\nGravity generators(Up): " + upwardDriveGravityGeneratorList.Count +"\nMasses: " + artificialMassList.Count);
         }
         
 
@@ -106,17 +107,42 @@ namespace SpaceEngineers_Visual_Studio_17
                 case "direction=backward":
                     backward();
                     break;
+                case "direction=up":
+                    up();
+                    break;
+                case "direction=down":
+                    down();
+                    break;
                 default:
                     stopGravityDrive();
                     break;
             }
         }
 
+        private void down()
+        {
+            turnOffInertiaDampener();
+            turnOffNormalGravity();
+            turnOffForwardDriveGravity();
+            turnOnUpwardDriveGravity(downwardGravity);
+            turnOnArtificialMass();
+        }
+
+        private void up()
+        {
+            turnOffInertiaDampener();
+            turnOffNormalGravity();
+            turnOffForwardDriveGravity();
+            turnOnUpwardDriveGravity(upwardGravity);
+            turnOnArtificialMass();
+        }
+
         private void forward()
         {
             turnOffInertiaDampener();
             turnOffNormalGravity();
-            turnOnDriveGravity(forwardGravity);
+            turnOffUpwardDriveGravity();
+            turnOnForwardDriveGravity(forwardGravity);
             turnOnArtificialMass();
         }
 
@@ -124,16 +150,54 @@ namespace SpaceEngineers_Visual_Studio_17
         {
             turnOffInertiaDampener();
             turnOffNormalGravity();
-            turnOnDriveGravity(backwardGravity);
+            turnOffUpwardDriveGravity();
+            turnOnForwardDriveGravity(backwardGravity);
             turnOnArtificialMass();
         }
 
         private void stopGravityDrive()
         {
             turnOffArtificialMass();
-            turnOffDriveGravity();
+            turnOffForwardDriveGravity();
+            turnOffUpwardDriveGravity();
             turnOnInertiaDampener();
             turnOnNormalGravity();
+        }
+
+        private void turnOnUpwardDriveGravity(float acceleration)
+        {
+            foreach (IMyGravityGenerator generator in upwardDriveGravityGeneratorList)
+            {
+                generator.GravityAcceleration = acceleration;
+                generator.ApplyAction("OnOff_On");
+            }
+        }
+
+        private void turnOnForwardDriveGravity(float acceleration)
+        {
+            foreach (IMyGravityGenerator generator in forwardDriveGravityGeneratorList)
+            {
+                generator.GravityAcceleration = acceleration;
+                generator.ApplyAction("OnOff_On");
+            }
+        }
+
+        private void turnOffUpwardDriveGravity()
+        {
+            foreach (IMyGravityGenerator generator in upwardDriveGravityGeneratorList)
+            {
+                generator.GravityAcceleration = 0.0f;
+                generator.ApplyAction("OnOff_Off");
+            }
+        }
+
+        private void turnOffForwardDriveGravity()
+        {
+            foreach (IMyGravityGenerator generator in forwardDriveGravityGeneratorList)
+            {
+                generator.GravityAcceleration = 0.0f;
+                generator.ApplyAction("OnOff_Off");
+            }
         }
 
         private void turnOffInertiaDampener()
@@ -144,24 +208,6 @@ namespace SpaceEngineers_Visual_Studio_17
         private void turnOnInertiaDampener()
         {
             mainCockpit.DampenersOverride = true;
-        }
-
-        private void turnOnDriveGravity(float acceleration)
-        {
-            foreach (IMyGravityGenerator generator in driveGravityGeneratorList)
-            {
-                generator.GravityAcceleration = acceleration;
-                generator.ApplyAction("OnOff_On");
-            }
-        }
-
-        private void turnOffDriveGravity()
-        {
-            foreach (IMyGravityGenerator generator in driveGravityGeneratorList)
-            {
-                generator.GravityAcceleration = 0.0f;
-                generator.ApplyAction("OnOff_Off");
-            }
         }
 
         private void turnOffArtificialMass()
@@ -195,6 +241,7 @@ namespace SpaceEngineers_Visual_Studio_17
                 generator.ApplyAction("OnOff_On");
             }
         }
+
         public void Save()
         {
             // Called when the program needs to save its state. Use

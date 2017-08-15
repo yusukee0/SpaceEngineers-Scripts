@@ -45,6 +45,8 @@ namespace SpaceEngineers
             // Get the list of Air vents
             airVentList = new List<IMyAirVent>();
             GridTerminalSystem.GetBlocksOfType<IMyAirVent>(airVentList);
+
+            Echo("Compiled Successculy!");
         }
 
         public void Main(string argument)
