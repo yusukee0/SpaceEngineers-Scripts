@@ -1,4 +1,4 @@
-# !!! Old, probably does not work anymore !!!
+# !!! Deprecated, probably does not work anymore !!!
 
 # Space Engineers scripts.
 ## Gravity Drive:
